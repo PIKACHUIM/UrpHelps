@@ -20,6 +20,6 @@ def urps_chan(data):
         retu = 3.3
     elif 85 <= data < 90:
         retu = 3.7
-    elif data>=90:
+    elif data >= 90:
         retu = 4.0
     return retu

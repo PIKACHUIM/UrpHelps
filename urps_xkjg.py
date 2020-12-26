@@ -1,13 +1,19 @@
-import os
 import json
 from urps_conf import *
+
+
 def urps_xkjg():
     os.system('cls')
-    os.system('color 2f')
+    os.system('color 3e')
     print()
     print("----------------------------------------------选课结果-----------------------------------------------")
-    xkjg_data = http_main.get(http_urls_xkl1)
-    xkjg_data = http_main.get(http_urls_xkl2)
+    try:
+        http_main.get(http_urls_xkl1)
+        xkjg_data = http_main.get(http_urls_xkl2)
+    except requests.exceptions.ConnectionError or BaseException:
+        urps_outs('nete')
+        urps_outs('retr')
+        return -2
     print("[获取状态码]：", xkjg_data.status_code, "(此处200为正常)")
     print("-----------------------------------------------------------------------------------------------------")
     print("属性 方式  教师名        周数        星期        时间         课程名")
@@ -27,11 +33,12 @@ def urps_xkjg():
         if xkjg_lsmz[0].find("ty") != -1:
             print("\t", end="")
         print("\t%7.7s" % (xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['weekDescription']), end="")
-        print("\t%1.1s"%(xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classDay']), end="")
-        print("\t%2.2s" % (xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classSessions'])+"-", end="")
+        print("\t%1.1s" % (xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classDay']), end="")
+        print("\t%2.2s" % (xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classSessions']) + "-", end="")
         try:
-            xkjg_temp = int(xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classSessions']) + int(xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['continuingSession']) -1
-        except:
+            xkjg_temp = int(xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['classSessions']) + int(
+                xkjg_tabs['xkxx'][0][xkjg_loop]['timeAndPlaceList'][0]['continuingSession']) - 1
+        except ValueError:
             xkjg_temp = 0
         print("%2.2s" % (str(xkjg_temp)) + "节", end="")
         print("\t%-16.16s\t"

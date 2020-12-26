@@ -1,9 +1,9 @@
-import os
 from urps_xkjg import *
 from urps_zxyk import *
 from urps_scor import *
-from urps_conf import *
 from urps_yjpj import *
+
+
 def urps_menu():
     os.system('cls')
     os.system('color 3f')
@@ -12,7 +12,7 @@ def urps_menu():
     print("                                       ■                  ■")
     print("                                       ■   SCU教务处助手  ■")
     print("                                       ■                  ■")
-    print("                                       ■      Ver1.0      ■")
+    print("                                       ■      Ver0.3.0    ■")
     print("                                       ■■■■■■■■■■■")
     print("")
     print("----------------------------------------------登录成功-----------------------------------------------")

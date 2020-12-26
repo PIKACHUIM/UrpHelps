@@ -1,10 +1,11 @@
-import os
 import hashlib
 from PIL import Image
 from urps_conf import *
 
 http_urls_logs = "http://zhjw.scu.edu.cn/j_spring_security_check"
 http_urls_caps = "http://zhjw.scu.edu.cn/img/captcha.jpg"
+
+
 # -----------------------------------------------主登录模块--------------------------------------------------
 def urps_logi():
     os.system('cls')
@@ -21,7 +22,7 @@ def urps_logi():
     print()
     try:
         http_caps = http_main.get(http_urls_caps)
-    except:
+    except requests.exceptions.ConnectionError:
         urps_outs('nete')
         urps_outs('retr')
         return -2
@@ -46,7 +47,7 @@ def urps_logi():
         "j_captcha": http_code}
     try:
         http_post = http_main.post(http_urls_logs, post_data, http_head)
-    except:
+    except requests.exceptions.ConnectionError:
         print("[严重的错误]：网络连接中断，请确保网络稳定")
         urps_outs('retr')
         return -2
