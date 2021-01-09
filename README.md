@@ -1,6 +1,6 @@
 # 四川大学综合教务系统助手 - 皮卡丘版本
 
-##### Assistant of comprehensive educational administration system of Sichuan University By Pikachu
+## Assistant of Comprehensive Educational Administration System of Sichuan University By Pikachu
 
 ## 软件介绍
 
