@@ -29,8 +29,17 @@ def urps_jdjs():
             if int(jdjs_inpu) == 1:
                 os.system('cls')
                 http_main.get(http_urls_jdjs)
-                jdjs_temp = http_main.get(http_urls_jddt)
-                jdjs_tabs = json.loads(jdjs_temp.text)
+                try:
+                    jdjs_temp = http_main.get(http_urls_jddt)
+                    if jdjs_temp.status_code != 200:
+                        print("[获取有问题]：无法获取信息，代码:", jdjs_temp.status_code)
+                        urps_outs('back')
+                        return 1
+                    jdjs_tabs = json.loads(jdjs_temp.text)
+                except json.decoder.JSONDecodeError:
+                    print("[获取有问题]：无法获取信息，解析错误")
+                    urps_outs('back')
+                    return 1
                 jdjs_data = []
                 for jdjs_lotq in jdjs_tabs:
                     for jdjs_lotp in jdjs_lotq['cjList']:
@@ -70,8 +79,17 @@ def urps_jdjs():
                 jdjs_xxjd = 0
                 jdjs_allj = 0
                 http_main.get(http_urls_jdjs)
-                jdjs_temp = http_main.get(http_urls_jddt)
-                jdjs_tabs = json.loads(jdjs_temp.text)
+                try:
+                    jdjs_temp = http_main.get(http_urls_jddt)
+                    if jdjs_temp.status_code != 200:
+                        print("[获取有问题]：无法获取信息，代码:", jdjs_temp.status_code)
+                        urps_outs('back')
+                        return 1
+                    jdjs_tabs = json.loads(jdjs_temp.text)
+                except json.decoder.JSONDecodeError:
+                    print("[获取有问题]：无法获取信息，解析错误")
+                    urps_outs('back')
+                    return 1
                 jdjs_data = []
                 for jdjs_lotq in jdjs_tabs:
                     for jdjs_lotp in jdjs_lotq['cjList']:

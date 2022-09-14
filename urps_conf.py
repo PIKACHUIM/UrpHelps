@@ -7,6 +7,7 @@ http_clas = {"0000000159": "10_1", "0000000160": "10_1", "0000000161": "10_1",
              "0000000162": "10_1", "0000000163": "10_1", "0000000164": "10_1", "0000000165": "10_1"}
 http_exam = {"0000000166": "10_1", "0000000167": "10_1", "0000000168": "10_1",
              "0000000169": "10_1", "0000000170": "10_1", "0000000171": "10_1", "0000000172": "10_1"}
+http_urls_init = "http://zhjw.scu.edu.cn/login"
 http_urls_zyxk = "http://zhjw.scu.edu.cn/student/courseSelect/courseSelect/index"
 http_urls_xkl1 = "http://zhjw.scu.edu.cn/student/courseSelect/courseSelectResult/index"
 http_urls_xkl2 = "http://zhjw.scu.edu.cn/student/courseSelect/thisSemesterCurriculum/callback"
@@ -19,7 +20,7 @@ http_yjpj_list = "http://zhjw.scu.edu.cn/student/teachingEvaluation/teachingEval
 http_yjpj_requ = "http://zhjw.scu.edu.cn/student/teachingEvaluation/teachingEvaluation/evaluationPage"
 http_yjpj_conf = "http://zhjw.scu.edu.cn/student/teachingEvaluation/teachingEvaluation/evaluation"
 http_head = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1"}
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33"}
 http_yjpj = [
     "老师非常好，和蔼可亲，教学经验丰富，互动充分", "老师有点严厉，但是上课认真，知识丰富讲解详细", "教学经验丰富，复杂问题能用通俗易懂的语言讲解",
     "授课时生动形象，极具幽默感，很能调动课堂气氛", "重点突出，合理使用各种教学形式，激发学生兴趣", "认真负责，有很强敬业精神，和蔼可亲，幽默风趣",
@@ -115,6 +116,10 @@ def urps_outs(urps_data=0):
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>按回车下一页>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     elif urps_data == 'nete':
         print("[严重的错误]：网络连接中断，请确保网络稳定")
+    elif urps_data == 'err_':
+        print("[严重的错误]：无法打开教务处网站，检查网络")
+    elif urps_data == 'e_tv':
+        print("[严重的错误]：无法获取tokenValue未知错误")
     elif urps_data == 'iner':
         print("[输入不正确]：请重新输入")
     elif urps_data == 'retr':

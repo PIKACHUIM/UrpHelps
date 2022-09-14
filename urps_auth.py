@@ -1,4 +1,6 @@
 import hashlib
+import json
+
 from PIL import Image
 from urps_conf import *
 
@@ -21,6 +23,21 @@ def urps_logi():
     print("------------------------------------------------登录-------------------------------------------------")
     print()
     try:
+        http_page = http_main.get(http_urls_init)
+        print("[登录页获取]：", http_page.status_code, "(此处200为正常)")
+        if http_page.status_code != 200:
+            urps_outs('err_')
+            urps_outs('retr')
+            return -2
+        else:
+            token_value = http_page.text.find("tokenValue")
+            if token_value > 0:
+                token_value = http_page.text[token_value + 37:token_value + 69]
+                print("[随机码获取]：", token_value)
+            else:
+                urps_outs('e_tv')
+                urps_outs('retr')
+                return -2
         http_caps = http_main.get(http_urls_caps)
     except requests.exceptions.ConnectionError:
         urps_outs('nete')
@@ -35,13 +52,38 @@ def urps_logi():
     print()
     http_code = input("[输入验证码]：")
     print()
-    http_user = input("[输入你学号]：")
-    print()
-    http_pass = input("[输入你密码]：")
-    print()
+    try:
+        config_flag = True
+        with open("config.ini", 'r') as config_file:
+            config_json = json.loads(config_file.read())
+            if not config_json['autoVery']:
+                config_flag = False
+                print("[登录页获取]：未配置自动登录")
+            if len(config_json['username']) <= 0 \
+                    or len(config_json['password']) <= 0:
+                config_flag = False
+                print("[登录页获取]：未配置账号密码")
+            else:
+                http_user = config_json['username']
+                http_pass = config_json['password']
+    except FileNotFoundError:
+        config_flag = False
+        print("[登录页获取]：找不到配置文件")
+    except json.decoder.JSONDecodeError:
+        config_flag = False
+        print("[登录页获取]：配置文件转换错误")
+    except KeyError:
+        config_flag = False
+        print("[登录页获取]：配置文件读取错误")
+    if not config_flag:
+        http_user = input("[输入你学号]：")
+        print()
+        http_pass = input("[输入你密码]：")
+        print()
     print("----------------------------------------------正在登陆-----------------------------------------------")
     http_hash = hashlib.md5(http_pass.encode()).hexdigest()
     post_data = {
+        "tokenValue": token_value,
         "j_username": http_user,
         "j_password": http_hash,
         "j_captcha": http_code}
@@ -60,7 +102,12 @@ def urps_logi():
         print()
         urps_outs('retr')
         return -1
-    if http_post.text.find('的培养方案') == -1:
+    elif http_post.text.find('token校验失败') != -1:
+        print("[登录未成功]：token校验失败")
+        print()
+        urps_outs('retr')
+        return -1
+    elif http_post.text.find('的培养方案') == -1:
         print("[登录未成功]：账号密码错误")
         print()
         urps_outs('retr')
