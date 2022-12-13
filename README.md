@@ -1,6 +1,6 @@
 # 四川大学综合教务系统助手 - 皮卡丘版本
 
-## Assistant of Comprehensive Educational Administration System of Sichuan University
+## Assistant of Comprehensive Educational Administration System of SCU
 
 ## 软件介绍
 
