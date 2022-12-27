@@ -16,7 +16,7 @@ target = Executable(
 # SETUP CX FREEZE
 setup(
     name="SCU URP Helper",
-    version="0.3.3",
+    version="0.4.0",
     description="四川大学教务处系统助手",
     author="Pikachu IM https://github.com/PIKACHUIM/UrpHelps",
     options={'build_exe': {'include_files': files}},

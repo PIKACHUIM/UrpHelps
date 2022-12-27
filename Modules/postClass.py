@@ -166,7 +166,7 @@ class AutoCourseGrabbing:
                 continue
         urps_outs('back')
 
-    def addClass(self):
+    def addClass(self, sub_class):
         os.system('cls')
         os.system('color 5f')
         urps_outs("zdqk")
@@ -188,8 +188,21 @@ class AutoCourseGrabbing:
             "jc": 0,
             "kclbdm": ""
         }
+        addles_retu = ""
         try:
-            addles_retu = self.http.get(http_urls_zyxk)
+            if len(sub_class) > 0:
+                try:
+                    sub_data = {
+                        "fajhh": sub_class['sub_fajhhs'],
+                        "xxbm": sub_class['sub_xxbm_t'],
+                        "xkjdlx": sub_class['sub_xkjdlx']
+                    }
+                    addles_retu = self.http.post(http_sub_class, data=sub_data)
+                except Exception as e:
+                    print("辅修方案提交错误:", e)
+                    addles_retu = self.http.get(http_urls_zyxk)
+            else:
+                addles_retu = self.http.get(http_urls_zyxk)
             if addles_retu.text.find("自由选课") != -1:
                 print()
                 print("[成功获取课表]：成功进入课表页面，正在读取教务处课表列表，请耐心等待")
@@ -200,11 +213,17 @@ class AutoCourseGrabbing:
                 print()
                 urps_outs("back")
                 return -3
-            os.system('cls')
+        except Exception as e:
+            print()
+            print("[无法进入页面]：当前非选课阶段，或者教务处网站挂了，或者你的网络不行")
+            print()
+            urps_outs("back")
+            return -3
         except requests.exceptions.ConnectionError:
             urps_outs('nete')
             urps_outs("back")
             return -2
+        os.system('cls')
         addles_tabs = json.loads(addles_retu.text)
         if type(addles_tabs['rwRxkZlList']) is str:
             addles_list = json.loads(addles_tabs['rwRxkZlList'])
@@ -298,6 +317,7 @@ class AutoCourseGrabbing:
 def urps_zdqk(zdqk_main):
     # 抢课菜单选择----------------------------------------
     os.system('cls')
+    sub_class = {}
     qkcd_data = AutoCourseGrabbing(zdqk_main)
     while 1:
         os.system('cls')
@@ -312,10 +332,10 @@ def urps_zdqk(zdqk_main):
                 return 1
             try:
                 qkcd_nump = int(qkcd_choi)
-                if qkcd_nump == 5:
+                if qkcd_nump == 0:
                     return 0
                 elif qkcd_nump == 1:
-                    qkcd_data.addClass()
+                    qkcd_data.addClass(sub_class)
                 elif qkcd_nump == 2:
                     qkcd_data.showall()
                 elif qkcd_nump == 3:
@@ -323,6 +343,16 @@ def urps_zdqk(zdqk_main):
                 elif qkcd_nump == 4:
                     qkcd_data.config()
                     qkcd_data.begins()
+                elif qkcd_nump == 6:
+                    print("查看方式: 浏览器选择辅修界面按下F12, 点击选择你的方案, 查看selectCourse/index下的表单")
+                    sub_fajhhs = input("[辅修/二专信息]请输入fajhh ：")
+                    sub_xxbm_t = input("[辅修/二专信息]请输入 xxbm ：")
+                    sub_xkjdlx = input("[辅修/二专信息]请输入xkjdlx：")
+                    sub_class = {
+                        "sub_fajhhs": sub_fajhhs,
+                        "sub_xxbm_t": sub_xxbm_t,
+                        "sub_xkjdlx": sub_xkjdlx
+                    }
             except ValueError:
                 urps_outs('iner')
                 continue

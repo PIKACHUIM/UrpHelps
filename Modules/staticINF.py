@@ -1,6 +1,6 @@
 import os
 import requests
-
+version = "0.4.0"
 http_main = requests.session()
 http_week = ['一', '二', '三', '四', '五', '六', '日', '??']
 http_clas = {"0000000159": "10_1", "0000000160": "10_1", "0000000161": "10_1",
@@ -15,6 +15,7 @@ http_urls_jdjs = "http://zhjw.scu.edu.cn/student/integratedQuery/scoreQuery/cour
 http_urls_jddt = "http://zhjw.scu.edu.cn/student/integratedQuery/scoreQuery/coursePropertyScores/callback"
 http_urls_kclb = "http://zhjw.scu.edu.cn/student/courseSelect/freeCourse/courseList"
 http_urls_post = "http://zhjw.scu.edu.cn/student/courseSelect/selectCourse/checkInputCodeAndSubmit"
+http_sub_class = "http://zhjw.scu.edu.cn/student/courseSelect/selectCourse/index"
 http_yjpj_post = "http://zhjw.scu.edu.cn/student/teachingEvaluation/evaluation/index"
 http_yjpj_list = "http://zhjw.scu.edu.cn/student/teachingEvaluation/teachingEvaluation/search"
 http_yjpj_requ = "http://zhjw.scu.edu.cn/student/teachingEvaluation/teachingEvaluation/evaluationPage"
@@ -145,7 +146,9 @@ def urps_outs(urps_data=0):
         print()
         print("                                          4.开始抢课              ")
         print()
-        print("                                          5.返回上级              ")
+        print("                                          6.添加辅修筛选信息ID    ")
+        print()
+        print("                                          0.返回上级              ")
         print()
         print("-----------------------------------------------------------------------------------------------------")
         print()
