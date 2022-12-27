@@ -72,7 +72,8 @@ class AutoCourseGrabbing:
                       " 轮询速度：" + str(addles_lxzq) + "ms/次",
                       " 设定速度：" + str(self.time) + "s/次")
                 print()
-                print(" CTRL-C 停止抢课并返回上一层 CTRL-Z 强制停止当前脚本 CTRL-D 结束输入内容 ALT+F4 强制结束并关闭程序")
+                print(" CTRL-C 停止抢课并返回上一层 CTRL-Z 强制停止当前脚本"
+                      " CTRL-D 结束输入内容 ALT+F4 强制结束并关闭程序")
                 print()
                 urps_outs(1)
             # ------------------------------------------------------------------------
@@ -93,15 +94,20 @@ class AutoCourseGrabbing:
                     }
                     addles_data = self.http.post(http_urls_kclb, addles_post)
                     addles_tabs = json.loads(addles_data.text)
-                    addles_list = json.loads(addles_tabs['rwRxkZlList'])
+                    if type(addles_tabs['rwRxkZlList']) is list:
+                        addles_list = addles_tabs['rwRxkZlList']
+                    elif type(addles_tabs['rwRxkZlList']) is str:
+                        addles_list = json.loads(addles_tabs['rwRxkZlList'])
+                    else:
+                        print("获取课程列表返回类型有误，此处必须为str或list")
                     addles_nums = 0
                     for addles_loop in addles_list:
                         addles_nums += 1
                         for addles_tttp in range(0, self.numc[addles_name]):
-                            if 1 == 1 and self.data[addles_name]['dat1'][addles_tttp] == addles_loop['kcm']  \
-                                      and self.data[addles_name]['dat2'][addles_tttp] == addles_loop['jasm'] \
-                                      and self.data[addles_name]['dat4'][addles_tttp] == addles_loop['kxh']  \
-                                      and self.data[addles_name]['dat3'][addles_tttp] == addles_loop['skjs']:
+                            if 1 == 1 and self.data[addles_name]['kcm'][addles_tttp] == addles_loop['kcm'] \
+                                    and self.data[addles_name]['jasm'][addles_tttp] == addles_loop['jasm'] \
+                                    and self.data[addles_name]['kxh'][addles_tttp] == addles_loop['kxh'] \
+                                    and self.data[addles_name]['kch'][addles_tttp] == addles_loop['kch']:
                                 classShow(addles_loop, addles_nums)
                                 # ----------------------------------------------------------------------------------
                                 if int(addles_loop['bkskyl']) > 0:
@@ -112,7 +118,7 @@ class AutoCourseGrabbing:
                                     zxyk_toke = addles_datr.text[zxyk_temp + 23:zxyk_temp + 55]
                                     zxyk_post = {
                                         "dealType": 5,
-                                        "kcIds":   addles_loop['kch']
+                                        "kcIds": addles_loop['kch']
                                                  + "@"
                                                  + addles_loop['kxh']
                                                  + "@"
@@ -160,7 +166,7 @@ class AutoCourseGrabbing:
                 continue
         urps_outs('back')
 
-    def addles(self):
+    def addClass(self):
         os.system('cls')
         os.system('color 5f')
         urps_outs("zdqk")
@@ -174,7 +180,10 @@ class AutoCourseGrabbing:
                 break
             urps_outs('iner')
         addles_data = {
-            "searchtj": addles_inpu,
+            "kkxsh": "",
+            "kch": "",
+            "kcm": addles_inpu,
+            "skjs": "",
             "xq": 0,
             "jc": 0,
             "kclbdm": ""
@@ -257,10 +266,10 @@ class AutoCourseGrabbing:
         print("[选中的课程]：将监听下列课程课余量：")
         urps_outs(0)
         addles_tpdt = {
-            'dat1': [],
-            'dat2': [],
-            'dat3': [],
-            'dat4': [],
+            'kcm': [],
+            'jasm': [],
+            'kch': [],
+            'kxh': [],
         }
         for addles_loop in addles_list:
             addles_nums += 1
@@ -268,10 +277,10 @@ class AutoCourseGrabbing:
                 if addles_nums == addles_appd:
                     classShow(addles_loop, addles_nums)
                     print()
-                    addles_tpdt['dat1'].append(addles_loop['kcm'])
-                    addles_tpdt['dat2'].append(addles_loop['jasm'])
-                    addles_tpdt['dat3'].append(addles_loop['skjs'])
-                    addles_tpdt['dat4'].append(addles_loop['kxh'])
+                    addles_tpdt['kcm'].append(addles_loop['kcm'])
+                    addles_tpdt['jasm'].append(addles_loop['jasm'])
+                    addles_tpdt['kch'].append(addles_loop['kch'])
+                    addles_tpdt['kxh'].append(addles_loop['kxh'])
         self.data[addles_inpu] = addles_tpdt
         self.numc[addles_inpu] = addles_numc
         urps_outs(0)
@@ -294,7 +303,10 @@ def urps_zdqk(zdqk_main):
         os.system('cls')
         urps_outs('zdqk')
         urps_outs('qkcd')
-        qkcd_choi = input("[请输入选项]：")
+        try:
+            qkcd_choi = input("[请输入选项]：")
+        except UnicodeDecodeError as e:
+            continue
         if len(qkcd_choi) >= 1:
             if 'exit' in qkcd_choi or 'n' in qkcd_choi:
                 return 1
@@ -303,7 +315,7 @@ def urps_zdqk(zdqk_main):
                 if qkcd_nump == 5:
                     return 0
                 elif qkcd_nump == 1:
-                    qkcd_data.addles()
+                    qkcd_data.addClass()
                 elif qkcd_nump == 2:
                     qkcd_data.showall()
                 elif qkcd_nump == 3:
